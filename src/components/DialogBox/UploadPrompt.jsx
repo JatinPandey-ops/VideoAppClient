@@ -38,6 +38,7 @@ export default function UploadPrompt({ open, setClose }) {
   const [videoPercentage, setVideoPercentage] = useState(0);
   const [tags, setTags] = useState([]);
   const [inputs, setInputs] = useState({});
+  const btnDisable = imgPercentage && videoPercentage === 100 ? "disabled" : null
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -94,6 +95,7 @@ export default function UploadPrompt({ open, setClose }) {
     img && uploadFile(img, "imgUrl","Thumbnails/");
   }
 
+  
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
@@ -101,16 +103,75 @@ export default function UploadPrompt({ open, setClose }) {
         "video",
         { ...inputs, tags },
         { withCredentials: true }
-      );
-      setClose(false);
-      res.status === 200 && navigate(`/video/${res.data._id}`);
-    } catch (err) {
-      console.log(err);
+        );
+        setImg(null)
+        setVideo(null)
+        setClose(false);
+        res.status === 200 && navigate(`/video/${res.data._id}`);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const videoProgressBar = () => {
+      if(videoPercentage > 0){
+        return(
+        <Box sx={{ width: "100%" }}>
+        <LinearProgress variant="determinate" color="warning" value={videoPercentage} />
+        </Box>
+        )
+      }if(videoPercentage === 100){
+        return (
+        <Typography color="success">Uploaded Successfully</Typography>
+        )
+      }else{
+        return(
+        <Stack direction="row" spacing={2}>
+        <TextField
+          type="file"
+          accept="video/*"
+          onChange={(e) => {
+            setVideo(e.target.files[0]);
+          }}
+        />
+        <IconButton onClick={uploadVideo}>
+          <UploadIcon/>
+        </IconButton>
+        </Stack>
+        )
+      }
     }
-  };
-
-  return (
-    <div>
+    const imgProgressBar = () => {
+      if(imgPercentage > 0){
+        return(
+        <Box sx={{ width: "100%" }}>
+        <LinearProgress variant="determinate" color="warning" value={imgPercentage} />
+        </Box>
+        )
+      }if(imgPercentage < 100){
+        return (
+          <Stack direction="row" spacing={2}>
+          <TextField
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              setImg(e.target.files[0]);
+            }}
+          />
+        <IconButton onClick={uploadImg}>
+          <UploadIcon/>
+        </IconButton>
+  
+        </Stack>
+          )
+        }if(imgPercentage === 100){
+          return(
+          <Typography color="success">Uploaded Successfully</Typography>
+        )
+      }
+    }
+    
+    return (
+      <div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -134,24 +195,7 @@ export default function UploadPrompt({ open, setClose }) {
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               Choose your video file
             </Typography>
-            {videoPercentage > 0 ? (
-              <Box sx={{ width: "100%" }}>
-                <LinearProgress variant="determinate" color="warning" value={videoPercentage} />
-              </Box>
-            ) : (
-              <Stack direction="row" spacing={2}>
-              <TextField
-                type="file"
-                accept="video/*"
-                onChange={(e) => {
-                  setVideo(e.target.files[0]);
-                }}
-              />
-              <IconButton onClick={uploadVideo}>
-                <UploadIcon/>
-              </IconButton>
-              </Stack>
-            )}
+            {videoProgressBar()}
             <TextField
               type="text"
               fullWidth
@@ -192,27 +236,10 @@ export default function UploadPrompt({ open, setClose }) {
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               Upload Thumbnail
             </Typography>
-            {imgPercentage > 0 ? (() => 
-             {imgPercentage === 100 ? (<Typography color="success">Uploaded Successfully</Typography>) : (<Box sx={{ width: "100%" }}>
-              <LinearProgress variant="determinate" color="warning" value={imgPercentage} />
-            </Box>)}
-            ) : (
-              <Stack direction="row" spacing={2}>
-                <TextField
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    setImg(e.target.files[0]);
-                  }}
-                />
-              <IconButton onClick={uploadImg}>
-                <UploadIcon/>
-              </IconButton>
-
-              </Stack>
-            )}
+            {imgProgressBar()}
 
             <Button
+              disableBtn
               variant="contained"
               size="medium"
               endIcon={<UploadIcon />}

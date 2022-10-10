@@ -186,7 +186,7 @@ export default function VideoEditPage() {
           </Stack>
           <Box sx={{ marginTop: "20px" }}>
             <Stack direction="row" spacing={2} justifyContent="space-evenly">
-              <Button variant="filled" color="danger" onClick={handleDelete}>
+              <Button variant="contained" color="error" onClick={handleDelete}>
                 Delete
               </Button>
               <Button

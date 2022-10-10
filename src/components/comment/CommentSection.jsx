@@ -67,7 +67,7 @@ const handleChange = (e) => {
     <Container>
         <InputWrapper>
         <Avatar src={currentUser?.img}/>
-        <StyledInput placeholder='Write your comment...' name="comment" onChange={handleChange}/>
+        <StyledInput placeholder='Write your comment...' name="comment" autoComplete="off" onChange={handleChange}/>
         <IconButton onClick={postComment}>
         <SendIcon/>
         </IconButton>

@@ -1,11 +1,16 @@
-import { Avatar, Box, Stack, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, IconButton, Stack, Typography, useTheme } from "@mui/material";
 import axios from "axios";
 import { format } from "timeago.js";
-import React, { useEffect, useState } from "react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import React, { useContext, useEffect, useState } from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useSelector } from "react-redux";
+import {AlertContext} from "../../context/AlertContext"
 
 export default function SingleComment({ comment }) {
   const [user, setUser] = useState({});
+  const { currentUser} = useSelector((state) => state.user)
+  const { currentVideo} = useSelector((state) => state.video)
+  const alertContext = useContext(AlertContext)
   const theme = useTheme();
   useEffect(() => {
     const fetch = async () => {
@@ -14,6 +19,14 @@ export default function SingleComment({ comment }) {
     };
     fetch();
   }, [comment]);
+
+  const handleDelete = () => {
+    alertContext.setOpen(true)
+    alertContext.setTitle("Are you sure?")
+    alertContext.setText("This step cannot be undone")
+    alertContext.setType("delComment")
+    alertContext.setDetails({comment})
+  }
   return (
     <Box
       sx={{
@@ -21,16 +34,17 @@ export default function SingleComment({ comment }) {
         padding: "20px",
         borderRadius: "2%",
         backgroundColor: theme.palette.primary.main,
+        position:"relative"
       }}
     >
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} alignItems="flex-Star">
         <Avatar src={user.img} />
-        <Stack spacing={0.5}>
+        <Stack>
+        <Box>
           <Stack direction="row" justifyContent="space-between">
-            <Typography varaint="body2" fontSize="small" color="text.secondary">
+            <Typography varaint="h6" fontSize="small" color="text.secondary">
               {user.name} • {format(comment.createdAt)}
             </Typography>
-
             <IconButton
               sx={{
                 display:
@@ -38,11 +52,16 @@ export default function SingleComment({ comment }) {
                   currentVideo?.userid === currentUser?._id
                     ? "block"
                     : "none",
+                position:"absolute",
+                top:"1px",
+                right:"2px"
               }}
+              onClick={handleDelete}
             >
-              <MoreVertIcon />
+              <DeleteIcon fontSize="small"/>
             </IconButton>
           </Stack>
+        </Box>
 
           <Typography varaint="body2" fontSize="medium" color="text.primary">
             {comment.comment}

@@ -33,8 +33,7 @@ export default function SmallCard({video , type}) {
 
       <Stack direction="row" spacing={2} alignItems="flex-Start">
       <img
-      height="94px"
-      width="165px"
+      style={{height:"94px",width:"165px",objectFit:"cover"}}
       src={video.imgUrl}/>
       <Box width="inherit">
       <Typography  fontWeight="600" fontSize="small"color={theme.palette.text.primary}>{video.title}</Typography>

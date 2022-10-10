@@ -35,7 +35,6 @@ export default function UpdateModal({open,type,setOpen}) {
   const {currentUser} = useSelector((state) => state.user)
   const path = useLocation().pathname.split('/')[2]
   const dispatch = useDispatch()
-  console.log(path)
 
   const renderTitle = () => {
     if (type === "profile") {

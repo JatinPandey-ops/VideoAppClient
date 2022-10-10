@@ -24,6 +24,7 @@ export default function VideoCard({video,type}) {
     <Box sx={{aspectRatio:"16/9",borderRadius:"5px",width:"100%",backgroundColor:theme.palette.primary.main}}>
       <Stack>
       <img
+      style={{width:"100%",height:"200px",objectFit:"cover"}}
       src={video.imgUrl}
       alt='loading....'
       />

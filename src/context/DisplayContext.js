@@ -6,9 +6,9 @@ const initialState = {
 const DisplayContext = createContext(initialState)
 
 const DisplayContextProvider = (props) => {
-    const [display,setDisplay] = useState("none");
+    const [display,setDisplay] = useState(false);
     const toggleHandleDisplay = () => {
-        display === "none" ? setDisplay("Block") : setDisplay("none")
+        display === false ? setDisplay(true) : setDisplay(false)
     };
     return (
         <DisplayContext.Provider value={{display,toggleHandleDisplay}}>

@@ -1,6 +1,8 @@
+import { Container } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import BlankPage from "../components/BlankPage";
 import Loading from "../components/Loading";
 import SmallCard from "../components/VideoCard/SmallCard";
 
@@ -12,9 +14,7 @@ const ManagePage = () => {
   useEffect(() => {
     setLoading(true);
     const fetch = async () => {
-      const res = await axios.get(
-        `video/uservideo/${currentUser._id}`
-      );
+      const res = await axios.get(`video/uservideo/${currentUser._id}`);
       setVideos(res.data);
       setLoading(false);
     };
@@ -23,13 +23,19 @@ const ManagePage = () => {
 
   return (
     <>
-      {currentUser === null || loading === true ? (
-        <Loading />
-      ) : (
-        videos.map((video) => <SmallCard key={video._id} video={video} type="edit"/>)
-      )}
+    {videos.length === 0 ? (<BlankPage message="No Uploads Found"/>) : (    <Container>
+    
+    {currentUser === null || loading === true ? (
+      <Loading />
+    ) : (
+      videos.map((video) => (
+        <SmallCard key={video._id} video={video} type="edit" />
+      ))
+    )
+  }
+    </Container>)}
     </>
   );
 };
 
-export default ManagePage
+export default ManagePage;

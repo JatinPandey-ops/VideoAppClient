@@ -17,9 +17,10 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
-  deleteObject
+  deleteObject,
 } from "firebase/storage";
-import { app } from "../Firebase";     
+import { app } from "../Firebase";
+import { deleteComment } from "../redux/commentSlice";
 
 const style = {
   position: "absolute",
@@ -32,25 +33,24 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const btnStyle = {
-  width: "50%",
-};
+
 
 export default function AlertDialogBox() {
   const alertContext = useContext(AlertContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-  const deleteFile = (file,folder) => {
-    const storage = getStorage(app)
-    const storageref = ref(storage , folder + file)
-  deleteObject(storageref).then(() => {
-      console.log("file deleted")
-    } ).catch((error) => {
-      console.log(error)
-    });
-  }
+  const deleteFile = (file, folder) => {
+    const storage = getStorage(app);
+    const storageref = ref(storage, folder + file);
+    deleteObject(storageref)
+      .then(() => {
+        console.log("file deleted");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const triggerLogout = async () => {
     await axios.get("auth/logout", { withCredentials: true });
@@ -58,25 +58,38 @@ export default function AlertDialogBox() {
     navigate("/");
     alertContext.setOpen(false);
     alertContext.setRes(false);
-  };
+    alertContext.setTitle("")
+    };
 
   const handleClose = () => {
     alertContext.setOpen(false);
   };
   const handleDelete = async () => {
-    deleteFile( alertContext?.details?.videoName,"Videos/") 
-    await axios.delete(`video/${alertContext?.details?.path}`,{withCredentials:true})
-    navigate("/manage")}
-
+    deleteFile(alertContext?.details?.videoName, "Videos/");
+    await axios.delete(`video/${alertContext?.details?.path}`, {
+      withCredentials: true,
+    });
+    navigate("/manage");
+    alertContext.setTitle("")
+    alertContext.setOpen(false)
+  };
+  const handleDeleteComment = async () => {
+    await axios.delete(`comment/${alertContext?.details.comment._id}`, {
+      withCredentials: true,
+    });
+    dispatch(deleteComment())
+    alertContext.setTitle("")
+    alertContext.setOpen(false)
+  };
 
   const renderBtn = () => {
     if (alertContext.type === "logout") {
       return (
         <>
-          <Button variant="contained" onClick={handleClose} sx={btnStyle}>
+          <Button variant="contained" onClick={handleClose} >
             Cancel
           </Button>
-          <Button variant="contained" onClick={triggerLogout} sx={btnStyle}>
+          <Button variant="contained" onClick={triggerLogout} color="error">
             Logout
           </Button>
         </>
@@ -84,7 +97,7 @@ export default function AlertDialogBox() {
     }
     if (alertContext.type === "loginErr") {
       return (
-        <Button variant="contained" onClick={handleClose} sx={btnStyle}>
+        <Button variant="contained" onClick={handleClose}>
           Retry
         </Button>
       );
@@ -92,28 +105,40 @@ export default function AlertDialogBox() {
     if (alertContext.type === "deleteVideo") {
       return (
         <>
-                  <Button variant="contained" onClick={handleClose} sx={btnStyle}>
+          <Button variant="contained" onClick={handleClose}>
             Cancel
           </Button>
-        <Button variant="contained" onClick={handleDelete} sx={btnStyle}>
-          Delete
-        </Button>
+          <Button variant="contained" onClick={handleDelete} color="error">
+            Delete
+          </Button>
         </>
       );
     }
     if (alertContext.type === "loginAlert") {
       return (
         <>
-          <Button variant="contained" onClick={handleClose} sx={btnStyle}>
+          <Button variant="contained" onClick={handleClose}>
             Cancel
           </Button>
           <Link to="/signin" style={{ textDecoration: "none" }}>
-            <Button variant="contained" sx={btnStyle}>
+            <Button variant="contained" >
               Login
             </Button>
           </Link>
         </>
       );
+    }
+    if (alertContext.type === "delComment") {
+      return (
+      <>
+        <Button variant="contained" onClick={handleClose} >
+          Cancel
+        </Button>
+        <Button variant="contained" onClick={handleDeleteComment}>
+          Delete
+        </Button>
+      </>
+      )
     }
   };
 
@@ -131,18 +156,20 @@ export default function AlertDialogBox() {
       >
         <Fade in={alertContext.open}>
           <Box sx={style}>
-            <Stack justifyContent="center" spacing={2}>
+            <Stack alignItems="center" spacing={2}>
               <Typography
                 id="transition-modal-title"
                 variant="h6"
                 component="h2"
               >
-                {alertContext.title}
+                {alertContext?.title }
               </Typography>
               <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                {alertContext.text}
+                {alertContext?.text} 
               </Typography>
-              <Box width="100%">{renderBtn()}</Box>
+              <Stack justifyContent="center" direction="row" spacing={2}>
+                {renderBtn()}
+              </Stack>
             </Stack>
           </Box>
         </Fade>

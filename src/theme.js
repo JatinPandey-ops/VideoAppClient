@@ -12,16 +12,25 @@ export const getDesignTokens = (mode) => ({
               main2:"#ff9600",
               secondary:"#fff"
           },
-          secondary:blue,
+          secondary:red,
           text: {
             primary: grey[900],
             secondary: grey[800],
           },
-            typography: {
-              fontFamily:
-                  'roboto, sans-serif',
+          typography: {
+              fontFamily: 
+                'roboto, sans-serif',
             },
+            components: {
+              MuiCssBaseline: {
+                styleOverrides: `
+                  @font-face {
+                    font-family: 'Poppins, sans-serif';
+                  }
+                `
+              },
           }
+        }
 
       : {
           // palette values for dark mode
@@ -29,7 +38,7 @@ export const getDesignTokens = (mode) => ({
             main:"#1b1b1b",
             secondary:"#424242"
           },
-          secondary:blue,
+          secondary:red,
           danger:red[700],
           divider: grey,
           background: {

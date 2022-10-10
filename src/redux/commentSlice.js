@@ -23,9 +23,12 @@ export const commentSlice = createSlice({
         },
         addComment : (state,action) => {
             state.comments.push(action.payload)
+        },
+        deleteComment : (state,action) => {
+            state.comments.splice(state.comments.map((comment) => (comment)).indexOf(action.payload),1)
         }
 
     }
 })
-export const { fetchComments,commentsFetched,commentsFailed,addComment} = commentSlice.actions
+export const { fetchComments,commentsFetched,commentsFailed,addComment,deleteComment} = commentSlice.actions
 export default commentSlice.reducer

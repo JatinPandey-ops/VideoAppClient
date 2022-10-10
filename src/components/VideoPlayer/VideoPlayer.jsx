@@ -19,12 +19,20 @@ import { format } from "timeago.js";
 import axios from "axios";
 import { dislike, like } from "../../redux/videoSlice";
 import { AlertContext } from "../../context/AlertContext";
+import ShareModal from "../ShareModal";
+
 
 const StyledVideo = styled("video")(({ theme }) => ({
   width: "100%",
 }));
+const iconStyle = {
+  color:"red"
+}
 export default function VideoPlayer({ videoData }) {
   const theme = useTheme();
+  const [open,setOpen] = useState(false)
+  const url = window.location.href
+  console.log(url)
   const alertContext = useContext(AlertContext)
   const dispatch = useDispatch();
   const { currentVideo } = useSelector((state) => state.video);
@@ -46,8 +54,13 @@ export default function VideoPlayer({ videoData }) {
       { withCredentials: true }
     );
   };
+  const handleShare = () => {
+    setOpen(true)
+  }
+  console.log(open)
   const handleAlert = () => {
  alertContext.setText("Please Login to React to this Video");
+ alertContext.setTitle("Login Required");
   alertContext.setOpen(true);
   alertContext.setType("loginAlert")
 
@@ -87,9 +100,9 @@ export default function VideoPlayer({ videoData }) {
               <Stack direction="row" spacing={1} alignItems="center">
                 <IconButton onClick={currentUser ? handleLike : handleAlert}>
                   {currentVideo.likes?.includes(currentUser?._id) ? (
-                    <FavoriteIcon />
+                    <FavoriteIcon sx={iconStyle} />
                   ) : (
-                    <FavoriteBorderIcon />
+                    <FavoriteBorderIcon sx={iconStyle} />
                   )}
                 </IconButton>
                 <Typography fontSize="medium">
@@ -99,9 +112,9 @@ export default function VideoPlayer({ videoData }) {
               <Stack direction="row" spacing={1} alignItems="center">
                 <IconButton onClick={currentUser ? handleDislike : handleAlert}>
                   {currentVideo.dislikes?.includes(currentUser?._id) ? (
-                    <ThumbDownIcon />
+                    <ThumbDownIcon sx={iconStyle} />
                   ) : (
-                    <ThumbDownOffAltIcon />
+                    <ThumbDownOffAltIcon sx={iconStyle} />
                   )}
                 </IconButton>
                 <Typography fontSize="medium">
@@ -109,13 +122,14 @@ export default function VideoPlayer({ videoData }) {
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center">
-                <IconButton>
-                  <ShareIcon />
+                <IconButton onClick={handleShare} >
+                  <ShareIcon sx={iconStyle} />
                 </IconButton>
                 <Typography fontSize="medium">Share</Typography>
               </Stack>
             </Stack>
         </Stack>
+        <ShareModal open={open} setOpen={setOpen} url={url}/>
       </Container>
     </Box>
   );

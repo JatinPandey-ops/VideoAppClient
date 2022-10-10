@@ -28,24 +28,25 @@ export default function Description({ channel }) {
 
   const handleSubscribe = async () => {
     if (currentUser.subscribedUsers?.includes(channel._id)) {
+      dispatch(subscription(channel._id));
       await axios.put(
         `users/unsub/${channel._id}`,
         undefined,
         { withCredentials: true }
       );
-      dispatch(subscription(channel._id));
     } else {
+      dispatch(subscription(channel._id));
       await axios.put(
         `users/sub/${channel._id}`,
         undefined,
         { withCredentials: true }
       );
-      dispatch(subscription(channel._id));
     }
   };
 
   const handleAlert = async () => {
     alertContext.setOpen(true)
+    alertContext.setTitle("Login Required");
    alertContext.setText("Please Login to subscribe to this channel");
    alertContext.setType("loginAlert")
   };
@@ -82,6 +83,7 @@ export default function Description({ channel }) {
           <Button
             variant="contained"
             onClick={currentUser === null ? handleAlert : handleSubscribe}
+            color={currentUser?.subscribedUsers?.includes(channel._id) ? "primary" : "error"}
           >
             {currentUser === null
               ? "Subscribe"
