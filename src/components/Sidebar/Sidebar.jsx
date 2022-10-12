@@ -76,7 +76,7 @@ export default function Sidebar({ setTags }) {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height:"100vh",
+        height:"120vh",
         width: "100%",
         position: "sticky",
         top: "0px",
