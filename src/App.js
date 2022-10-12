@@ -43,7 +43,6 @@ function App() {
             sx={{
               [theme.breakpoints.down("md")]: {
                 position: "fixed",
-                height: "100vh",
                 left: display === false ? "-200px" : "0px",
                 transition:"0.5s",
                 zIndex: "999",

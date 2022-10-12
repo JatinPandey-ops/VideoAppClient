@@ -53,7 +53,7 @@ const MenuItem = styled("div")(({ theme }) => ({
 }));
 
 const Hr = styled("hr")(({ theme }) => ({
-  margin: theme.spacing(3, 0),
+  margin: theme.spacing(2, 0),
 }));
 const StyledTypography = styled(Typography)(({ theme }) => ({
   display: { md: "none", xs: "block" },
@@ -76,7 +76,7 @@ export default function Sidebar({ setTags }) {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height:"120vh",
+        height:{xs:"calc(100vh - 56px)",sm:"calc(100vh - 56px)",md:"calc(100vh - 56px)",lg:"100vh"},
         width: "100%",
         position: "sticky",
         top: "0px",
