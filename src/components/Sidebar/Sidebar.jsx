@@ -21,6 +21,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
+import  CustomScroll  from "react-custom-scroll"
 import { useContext } from "react";
 import { ModeContext } from "../../context/ThemeContext";
 import { DisplayContext } from "../../context/DisplayContext";
@@ -75,12 +76,12 @@ export default function Sidebar({ setTags }) {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "115vh",
+        height: {xs:"calc(100vh - 56px)" ,sm:"calc(100vh - 56px)" ,md:"calc(100vh - 56px)",lg:"100vh"},
         width: "100%",
         position: "sticky",
         top: "0px",
         padding: "10px",
-        overFlow:"scroll",
+        overflowY:"auto",
         backgroundColor: theme.palette.primary.main,
       }}
     >
@@ -224,5 +225,6 @@ export default function Sidebar({ setTags }) {
 
       </Box>
     </Box>
+
   );
 }

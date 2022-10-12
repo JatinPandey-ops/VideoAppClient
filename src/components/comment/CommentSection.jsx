@@ -12,14 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addComment, commentsFetched, fetchComments } from '../../redux/commentSlice';
 import { AddComment } from '@mui/icons-material';
 
-const InputWrapper = styled("div")(({theme}) =>({
-  display:"flex",
-  gap:"10px",
-  justifyContent:"space-between",
-  alignItems:"center",
-      width:"100%",
 
-}));
 const StyledInput = styled("input")(({theme}) =>({
   width:"100%",
   backgroundColor:"transparent",
@@ -52,7 +45,11 @@ export default function CommentSection() {
  
 const postComment = async () => {
       await axios.post("comment/",input,{withCredentials:true})
+
       dispatch(addComment(input))
+      const res = await axios.get(`comment/${path}`)
+      dispatch(commentsFetched(res.data))
+      setInput({userId:currentUser?._id,videoId:currentVideo?._id})
 }
 
 const handleChange = (e) => {
@@ -65,13 +62,16 @@ const handleChange = (e) => {
 
   return (
     <Container>
-        <InputWrapper>
+        <form>
+    <Stack direction="row" justifyContent="center" spacing={2}>
+
         <Avatar src={currentUser?.img}/>
         <StyledInput placeholder='Write your comment...' name="comment" autoComplete="off" onChange={handleChange}/>
         <IconButton onClick={postComment}>
         <SendIcon/>
         </IconButton>
-        </InputWrapper>
+    </Stack>
+        </form>
       <Stack direction="row" justifyContent="space-between" mt="20px">
         <Typography variant="h6" color="text.secondary">Comment Section</Typography> 
         <IconButton onClick={() => {handleCommentDisplay()}}><KeyboardArrowDownIcon/></IconButton>

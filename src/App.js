@@ -14,6 +14,7 @@ import AlertDialogBox from "./components/AlertDialogBox";
 import VideoEditPage from "./pages/VideoEditPage";
 import CategoriesVideo from "./pages/CategoriesVideo";
 import SearchVideo from "./pages/SearchVideo";
+import CustomScroll from 'react-custom-scroll';
 import { DisplayContext } from "./context/DisplayContext";
 
 function App() {
@@ -49,7 +50,9 @@ function App() {
               },
             }}
           >
+
             <Sidebar  tags={tags} setTags={setTags} />
+
           </Grid>
           <Grid lg={10} md={11} xs={12}>
             <Routes>

@@ -24,7 +24,7 @@ export default function Homepage({ type, tags, setTags }) {
       {loading === true ? (
         <Loading />
       ) : (
-        <Container>
+        <Box>
           <Grid container spacing={2}>
             {videos.map((video) => (
               <Grid item xl={2} lg={4} md={4} xs={12} sm={6}>
@@ -32,7 +32,7 @@ export default function Homepage({ type, tags, setTags }) {
               </Grid>
             ))}
           </Grid>
-        </Container>
+        </Box>
       )}
     </>
   );

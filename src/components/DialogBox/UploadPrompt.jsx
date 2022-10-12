@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { IconButton, LinearProgress, Stack, styled, TextField } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 import {
   getStorage,
@@ -38,7 +39,8 @@ export default function UploadPrompt({ open, setClose }) {
   const [videoPercentage, setVideoPercentage] = useState(0);
   const [tags, setTags] = useState([]);
   const [inputs, setInputs] = useState({});
-  const btnDisable = imgPercentage && videoPercentage === 100 ? "disabled" : null
+  const [uploading, setUploading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -78,6 +80,7 @@ export default function UploadPrompt({ open, setClose }) {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setUploading(false)
           setInputs((prev) => {
             return { ...prev, [urlType]: downloadURL };
           });
@@ -87,10 +90,12 @@ export default function UploadPrompt({ open, setClose }) {
   };
 
   const uploadVideo = (e) => {
+    setUploading(true)
     e.preventDefault()
     video && uploadFile(video, "videoUrl","Videos/");
   }
   const uploadImg = (e) => {
+    setUploading(true)
     e.preventDefault()
     img && uploadFile(img, "imgUrl","Thumbnails/");
   }
@@ -104,8 +109,12 @@ export default function UploadPrompt({ open, setClose }) {
         { ...inputs, tags },
         { withCredentials: true }
         );
+        setInputs({})
         setImg(null)
         setVideo(null)
+        setTags(null)
+        setImgPercentage(0)
+        setVideoPercentage(0)
         setClose(false);
         res.status === 200 && navigate(`/video/${res.data._id}`);
       } catch (err) {
@@ -127,6 +136,7 @@ export default function UploadPrompt({ open, setClose }) {
         return(
         <Stack direction="row" spacing={2}>
         <TextField
+        required
           type="file"
           accept="video/*"
           onChange={(e) => {
@@ -151,6 +161,7 @@ export default function UploadPrompt({ open, setClose }) {
         return (
           <Stack direction="row" spacing={2}>
           <TextField
+            required
             type="file"
             accept="image/*"
             onChange={(e) => {
@@ -176,15 +187,18 @@ export default function UploadPrompt({ open, setClose }) {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
-        onClose={setClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
-      >
+        >
         <Fade in={open}>
           <Box sx={style}>
+            <IconButton onClick={() => {setClose()}} sx={{position:"absolute",top:"0px",right:"10px"}}>
+        <CancelOutlinedIcon/>
+
+            </IconButton>
             <Typography
               id="transition-modal-title"
               variant="h5"
@@ -195,8 +209,11 @@ export default function UploadPrompt({ open, setClose }) {
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               Choose your video file
             </Typography>
+            <form>
+
             {videoProgressBar()}
             <TextField
+              required
               type="text"
               fullWidth
               label="Title"
@@ -209,6 +226,7 @@ export default function UploadPrompt({ open, setClose }) {
             />
 
             <TextField
+            required
               type="text"
               fullWidth
               multiline
@@ -223,6 +241,7 @@ export default function UploadPrompt({ open, setClose }) {
             />
 
             <TextField
+            required
               type="text"
               fullWidth
               label="Tags"
@@ -232,22 +251,24 @@ export default function UploadPrompt({ open, setClose }) {
               name="tags"
               onChange={handleTags}
               color="secondary"
-            />
+            /> 
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
               Upload Thumbnail
             </Typography>
             {imgProgressBar()}
 
             <Button
-              disableBtn
+              disabled={uploading}
               variant="contained"
               size="medium"
               endIcon={<UploadIcon />}
+              type="submit"
               sx={{ width: "100%", marginTop: "10px" }}
               onClick={handleUpload}
             >
               Upload
             </Button>
+            </form>
           </Box>
         </Fade>
       </Modal>
