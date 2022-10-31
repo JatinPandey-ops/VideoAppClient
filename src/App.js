@@ -17,6 +17,7 @@ import SearchVideo from "./pages/SearchVideo";
 import CustomScroll from 'react-custom-scroll';
 import { DisplayContext } from "./context/DisplayContext";
 
+
 function App() {
   //SEarch by tags
   const [tags,setTags] = useState([])
@@ -77,6 +78,7 @@ function App() {
             </Routes>
           </Grid>
         </Grid>
+
       </BrowserRouter>
     </ThemeProvider>
   );

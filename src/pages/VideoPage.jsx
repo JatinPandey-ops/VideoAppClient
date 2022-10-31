@@ -19,7 +19,8 @@ const Hr = styled('hr')(({theme})=>({
 
 export default function VideoPage() {
   const [channel,setChannel] = useState({});
-  const {currentVideo,loading} = useSelector((state) => state.video);
+  const [loading,setLoading] = useState(false);
+  const {currentVideo} = useSelector((state) => state.video);
   const {currentChannel} = useSelector((state) => state.channel);
   const dispatch =  useDispatch();
   const path = useLocation().pathname.split("/")[2];
@@ -51,8 +52,10 @@ export default function VideoPage() {
 
   useEffect(() => {
     dispatch(fetchChannel())
+    setLoading(true)
     const fetchChannelDetails = async () => {
-      const res = await axios.get(`users/find/${currentVideo.userid}`)
+      const res = await axios.get(`users/find/${currentVideo?.userid}`)
+      setLoading(false)
       setChannel(res.data)
       dispatch(channelfetched(res.data))
 
@@ -63,7 +66,7 @@ export default function VideoPage() {
   
   return (
   <Box>
-  {currentVideo === null || loading === true ? (<Loading/>) : (
+  { loading === true ? (<Loading/>) : (
     <Box>
     <Grid container>
     <Grid item lg={8} md={8} width="100%">
@@ -76,7 +79,7 @@ export default function VideoPage() {
     </Stack>
     </Grid>
     <Grid item lg={4} md={4}>
-      <Recommendation tags={currentVideo.tags}/>
+      <Recommendation tags={currentVideo?.tags}/>
     </Grid>
     </Grid>
 

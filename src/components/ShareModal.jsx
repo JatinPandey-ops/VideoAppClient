@@ -7,11 +7,12 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
-import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
-import React from "react";
-import { Twitter } from "@mui/icons-material";
+import React, { useState } from "react";
+import {FacebookShareButton ,WhatsappShareButton} from "react-share"
+import {FacebookIcon, WhatsappIcon} from "react-share"
+import ContentCopyIcon  from "@mui/icons-material/ContentCopy";
+
+
 
 const style = {
   position: "absolute",
@@ -24,13 +25,20 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const iconStyle = {
-  fontSize: "20px",
-};
+
+const icons ={
+  display:"flex",
+  flexDirection:"column",
+  justifyContent:"center",
+  gap:"15px",
+  
+}
 
 export default function ShareModal({ open, setOpen,url }) {
+  const [text,setText] = useState("Copy")
   const handleClose = () => {
     setOpen(false);
+    setText("Copy")
   };
 
   return (
@@ -48,37 +56,35 @@ export default function ShareModal({ open, setOpen,url }) {
       >
         <Fade in={open}>
           <Box sx={style}>
+            <Typography gutterBottom style={{marginBottom:"10px", textAlign:"center"}}>Share video with your friends</Typography>
             <Stack direction="row" spacing={2} justifyContent="center">
-              <Box>
-                <Stack alignItems="Center">
-                    <WhatsAppIcon sx={{ iconStyle }} />
-                  <Typography fontSize="small">Whatsapp</Typography>
-                </Stack>
-              </Box>
-              <Box>
-                <Stack alignItems="Center">
-                  <IconButton>
-                    <FacebookOutlinedIcon sx={{ iconStyle }} />
-                  </IconButton>
-                  <Typography fontSize="small">Facebook</Typography>
-                </Stack>
-              </Box>
-              <Box>
-                <Stack alignItems="Center">
-                  <IconButton>
-                    <Twitter sx={{ iconStyle }} />
-                  </IconButton>
-                  <Typography fontSize="small">Twitter</Typography>
-                </Stack>
-              </Box>
-              <Box>
-                <Stack alignItems="Center">
-                  <IconButton>
-                    <ContentPasteOutlinedIcon sx={{ iconStyle }} />
-                  </IconButton>
-                  <Typography fontSize="small">Clipboard</Typography>
-                </Stack>
-              </Box>
+             <Box style={icons}>
+              <FacebookShareButton
+              url={url}
+              quote="Hey checkout this video on Electronn"
+              >
+                <FacebookIcon logofillColor="white" size={40} round={true}/>
+              </FacebookShareButton>
+              <Typography>Facebook</Typography>
+             </Box>
+             <Box style={icons}>
+              <WhatsappShareButton
+              url={url}
+              title="Hey checkout this video on Electronn"
+              >
+                <WhatsappIcon logofillColor="white" size={40} round={true}/>
+              </WhatsappShareButton>
+                <Typography>Whatsapp</Typography>
+             </Box>
+             <Box style={icons}>
+              <IconButton
+              onClick={() => {navigator.clipboard.writeText(url).then(setText("Copied"))}}
+              >
+                <ContentCopyIcon style={{fontSize:"30px"}}/>
+              </IconButton>
+                <Typography>{text}</Typography>
+             </Box>
+
             </Stack>
           </Box>
         </Fade>

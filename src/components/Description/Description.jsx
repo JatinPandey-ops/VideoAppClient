@@ -29,26 +29,22 @@ export default function Description({ channel }) {
   const handleSubscribe = async () => {
     if (currentUser.subscribedUsers?.includes(channel._id)) {
       dispatch(subscription(channel._id));
-      await axios.put(
-        `users/unsub/${channel._id}`,
-        undefined,
-        { withCredentials: true }
-      );
+      await axios.put(`users/unsub/${channel._id}`, undefined, {
+        withCredentials: true,
+      });
     } else {
       dispatch(subscription(channel._id));
-      await axios.put(
-        `users/sub/${channel._id}`,
-        undefined,
-        { withCredentials: true }
-      );
+      await axios.put(`users/sub/${channel._id}`, undefined, {
+        withCredentials: true,
+      });
     }
   };
 
   const handleAlert = async () => {
-    alertContext.setOpen(true)
+    alertContext.setOpen(true);
     alertContext.setTitle("Login Required");
-   alertContext.setText("Please Login to subscribe to this channel");
-   alertContext.setType("loginAlert")
+    alertContext.setText("Please Login to subscribe to this channel");
+    alertContext.setType("loginAlert");
   };
 
   const handleDescription = () => {
@@ -79,18 +75,23 @@ export default function Description({ channel }) {
               </Stack>
             </Stack>
           </Box>
-
-          <Button
-            variant="contained"
-            onClick={currentUser === null ? handleAlert : handleSubscribe}
-            color={currentUser?.subscribedUsers?.includes(channel._id) ? "primary" : "error"}
-          >
-            {currentUser === null
-              ? "Subscribe"
-              : currentUser.subscribedUsers?.includes(channel._id)
-              ? "Subscribed"
-              : "Subscribe"}
-          </Button>
+          {currentUser?._id === channel._id ? null : (
+            <Button
+              variant="contained"
+              onClick={currentUser === null ? handleAlert : handleSubscribe}
+              color={
+                currentUser?.subscribedUsers?.includes(channel._id)
+                  ? "primary"
+                  : "error"
+              }
+            >
+              {currentUser === null
+                ? "Subscribe"
+                : currentUser.subscribedUsers?.includes(channel._id)
+                ? "Subscribed"
+                : "Subscribe"}
+            </Button>
+          )}
         </Stack>
       </Box>
       <Box marginTop="20px">
