@@ -51,7 +51,6 @@ export default function VideoPage() {
   },[path])
 
   useEffect(() => {
-    dispatch(fetchChannel())
     setLoading(true)
     const fetchChannelDetails = async () => {
       const res = await axios.get(`users/find/${currentVideo?.userid}`)
