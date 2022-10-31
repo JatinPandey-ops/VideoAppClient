@@ -10,9 +10,7 @@ export const videoSlice = createSlice({
     name:"video",
     initialState,
     reducers: {
-            fetchVideo : (state) => {
-              state.loading = true
-            },
+
             videoFetched : (state) => {
               state.loading = false
             },

@@ -9,7 +9,7 @@ import Description from '../components/Description/Description'
 import Loading from '../components/Loading'
 import Recommendation from "../components/RecommendationSectin/Recommendation"
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer'
-import { fetchVideo, fetchSuccess} from '../redux/videoSlice';
+import { fetchSuccess} from '../redux/videoSlice';
 import {channelfetched,fetchChannel } from '../redux/channelSlice';
 
 const Hr = styled('hr')(({theme})=>({
@@ -27,7 +27,6 @@ export default function VideoPage() {
 
 
   useEffect(() => {
-    dispatch(fetchVideo())
     const fetchData =  async () => {
       try{
         const videoRes = await axios.get(`video/find/${path}`)
@@ -60,7 +59,7 @@ export default function VideoPage() {
 
     }
     fetchChannelDetails();
-  },[currentVideo])
+  },[currentVideo?.userid])
 
   
   return (
