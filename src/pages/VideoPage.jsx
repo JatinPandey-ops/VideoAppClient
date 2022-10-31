@@ -42,9 +42,11 @@ export default function VideoPage() {
   
 
   useEffect(() => {
+    setLoading(true)
     const increaseView = async () => {
       await axios.put(`video/view/${path}`)
-
+      setLoading(false)
+      
     }
     increaseView();
   },[path])
@@ -77,7 +79,7 @@ export default function VideoPage() {
     </Stack>
     </Grid>
     <Grid item lg={4} md={4}>
-      <Recommendation tags={currentVideo?.tags}/>
+      <Recommendation tags={currentVideo?.tags} setLoading={setLoading}/>
     </Grid>
     </Grid>
 

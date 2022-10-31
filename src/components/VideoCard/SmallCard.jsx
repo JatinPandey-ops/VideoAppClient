@@ -12,7 +12,7 @@ const menuStyle= {
 
 
 
-export default function SmallCard({video , type}) {
+export default function SmallCard({video , type }) {
   const [channel,setChannel] = useState({})
   const url = type === "edit" ? `/edit/${video._id}` : `/video/${video._id}`
 
@@ -20,6 +20,7 @@ export default function SmallCard({video , type}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+
     const fetchUser = async () => {
       const res = await axios.get(`users/find/${video.userid}`)
       setChannel(res.data)

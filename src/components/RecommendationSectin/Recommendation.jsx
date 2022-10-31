@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { fetchSuccess, fetchVideo } from '../../redux/videoSlice'
 import SmallCard from "../VideoCard/SmallCard"
 
-function Recommendation({tags}) {
+function Recommendation({tags ,setLoading}) {
   const [videos , setVideos] = useState([])
   const dispatch = useDispatch()
   useEffect(() => {
