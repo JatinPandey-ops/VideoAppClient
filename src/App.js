@@ -16,6 +16,8 @@ import CategoriesVideo from "./pages/CategoriesVideo";
 import SearchVideo from "./pages/SearchVideo";
 import CustomScroll from 'react-custom-scroll';
 import { DisplayContext } from "./context/DisplayContext";
+import "react-toastify/dist/ReactToastify.css"
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -78,7 +80,7 @@ function App() {
             </Routes>
           </Grid>
         </Grid>
-
+      <ToastContainer/>
       </BrowserRouter>
     </ThemeProvider>
   );

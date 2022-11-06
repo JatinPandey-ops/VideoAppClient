@@ -12,7 +12,8 @@ const menuStyle= {
 
 
 
-export default function SmallCard({video , type }) {
+export default function SmallCard({video , type}) {
+
   const [channel,setChannel] = useState({})
   const url = type === "edit" ? `/edit/${video._id}` : `/video/${video._id}`
 

@@ -5,13 +5,15 @@ import { useDispatch } from 'react-redux'
 import { fetchSuccess, fetchVideo } from '../../redux/videoSlice'
 import SmallCard from "../VideoCard/SmallCard"
 
-function Recommendation({tags ,setLoading}) {
+function Recommendation({tags }) {
   const [videos , setVideos] = useState([])
   const dispatch = useDispatch()
   useEffect(() => {
+
     const fetchVideos = async () => {
       const res = await axios.get(`video/tags?tags=${tags}`);
       setVideos(res.data)
+   
 
     }
     fetchVideos();
@@ -20,7 +22,7 @@ function Recommendation({tags ,setLoading}) {
     <Stack>
       {videos.map((video) => (
         
-        <SmallCard key={video._id} video={video}/>
+        <SmallCard key={video._id} video={video} />
       ))}
 
     </Stack>

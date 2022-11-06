@@ -73,9 +73,9 @@ export default function VideoPlayer({ videoData }) {
           autoplay
           preload="auto"
           controls
-          poster={currentVideo.imgUrl}
+          poster={currentVideo?.imgUrl}
         >
-          <source src={currentVideo.videoUrl} />
+          <source src={currentVideo?.videoUrl} />
         </StyledVideo>
       </Box>
       <Container>
@@ -85,7 +85,7 @@ export default function VideoPlayer({ videoData }) {
           component="div"
           color={theme.palette.text.primary}
         >
-          {currentVideo.title}
+          {currentVideo?.title}
         </Typography>
         <Stack direction="column">
           <Typography
@@ -94,31 +94,31 @@ export default function VideoPlayer({ videoData }) {
             varaint="body2"
             color={theme.palette.text.secondary}
           >
-            {currentVideo.views} views • {format(currentVideo.createdAt)}
+            {currentVideo?.views} views • {format(currentVideo?.createdAt)}
           </Typography>
           <Stack direction="row" justifyContent="space-between" spacing={3}>
               <Stack direction="row" spacing={1} alignItems="center">
                 <IconButton onClick={currentUser ? handleLike : handleAlert}>
-                  {currentVideo.likes?.includes(currentUser?._id) ? (
+                  {currentVideo?.likes?.includes(currentUser?._id) ? (
                     <FavoriteIcon sx={iconStyle} />
                   ) : (
                     <FavoriteBorderIcon sx={iconStyle} />
                   )}
                 </IconButton>
                 <Typography fontSize="medium">
-                  {currentVideo.likes.length}
+                  {currentVideo?.likes?.length}
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center">
                 <IconButton onClick={currentUser ? handleDislike : handleAlert}>
-                  {currentVideo.dislikes?.includes(currentUser?._id) ? (
+                  {currentVideo?.dislikes?.includes(currentUser?._id) ? (
                     <ThumbDownIcon sx={iconStyle} />
                   ) : (
                     <ThumbDownOffAltIcon sx={iconStyle} />
                   )}
                 </IconButton>
                 <Typography fontSize="medium">
-                  {currentVideo.dislikes.length}
+                  {currentVideo?.dislikes?.length}
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center">

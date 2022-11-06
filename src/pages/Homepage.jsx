@@ -27,7 +27,7 @@ export default function Homepage({ type, tags, setTags }) {
         <Box>
           <Grid container spacing={2}>
             {videos.map((video) => (
-              <Grid item xl={2} lg={4} md={4} xs={12} sm={6}>
+              <Grid item xl={4} lg={4} md={4} xs={12} sm={6}>
                 <VideoCard key={video._id} video={video} type={type} />
               </Grid>
             ))}

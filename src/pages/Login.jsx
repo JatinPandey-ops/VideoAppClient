@@ -1,12 +1,14 @@
-import { Box, Button,  Stack,  TextField,  Typography } from '@mui/material';
+import { Box, Button,  Stack,  TextField,  Typography, useTheme } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { Link,  useNavigate } from 'react-router-dom';
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import { loginFailure, loginStart, loginSuccess } from '../redux/userSlice';
 import { AlertContext } from '../context/AlertContext';
+import { toast } from 'react-toastify';
 
 export default function Login() {
+  const theme =useTheme()
   const [email,setEmail] =  useState();
   const [password,setPassword] =  useState();
   const  dispatch = useDispatch();
@@ -19,6 +21,7 @@ export default function Login() {
     try{
       const res = await axios.post("auth/signin", {email , password},{ withCredentials:true} )
       dispatch(loginSuccess(res.data))
+      toast(`Logged in as ${res.data.name}`,{theme: theme.palette.mode})
       res.status === 200 && navigate("/")
 
       }catch(error){

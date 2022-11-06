@@ -19,8 +19,8 @@ const Hr = styled('hr')(({theme})=>({
 
 export default function VideoPage() {
   const [channel,setChannel] = useState({});
-  const [loading,setLoading] = useState(false);
-  const {currentVideo} = useSelector((state) => state.video);
+  const [channelloading,setChannelLoading] = useState(false);
+  const {currentVideo,loading} = useSelector((state) => state.video);
   const {currentChannel} = useSelector((state) => state.channel);
   const dispatch =  useDispatch();
   const path = useLocation().pathname.split("/")[2];
@@ -40,33 +40,34 @@ export default function VideoPage() {
     fetchData(); 
   },[path])
   
-
+  
   useEffect(() => {
-    setLoading(true)
+    setChannelLoading(true)
+    
     const increaseView = async () => {
       await axios.put(`video/view/${path}`)
-      setLoading(false)
+      setChannelLoading(false)
+      
       
     }
     increaseView();
   },[path])
-
+  
   useEffect(() => {
-    setLoading(true)
+    setChannelLoading(true)
     const fetchChannelDetails = async () => {
       const res = await axios.get(`users/find/${currentVideo?.userid}`)
-      setLoading(false)
       setChannel(res.data)
       dispatch(channelfetched(res.data))
-
+      
     }
     fetchChannelDetails();
   },[currentVideo?.userid])
-
+  
   
   return (
-  <Box>
-  { loading === true ? (<Loading/>) : (
+    <Box>
+  { loading || channelloading === true ? (<Loading/>) : (
     <Box>
     <Grid container>
     <Grid item lg={8} md={8} width="100%">
@@ -79,7 +80,7 @@ export default function VideoPage() {
     </Stack>
     </Grid>
     <Grid item lg={4} md={4}>
-      <Recommendation tags={currentVideo?.tags} setLoading={setLoading}/>
+      <Recommendation tags={currentVideo?.tags} setChannelLoading={setChannelLoading} />
     </Grid>
     </Grid>
 

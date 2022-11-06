@@ -112,7 +112,7 @@ export default function Description({ channel }) {
             <KeyboardArrowDownIcon />
           </IconButton>
         </Stack>
-        <Box display={descriptionDisplay}>{currentVideo.desc} </Box>
+        <Box display={descriptionDisplay}>{currentVideo?.desc} </Box>
       </Box>
     </Container>
   );
