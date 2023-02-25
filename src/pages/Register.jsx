@@ -6,20 +6,28 @@ import {
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
 import axios from "axios"
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import LoadingButton from '@mui/lab/LoadingButton';
+import PersonIcon from '@mui/icons-material/Person';
+import { toast } from "react-toastify";
 
 export default function Register() {
+  const theme = useTheme()
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     dispatch(loginStart());
     try {
@@ -29,6 +37,8 @@ export default function Register() {
         password,
       });
       dispatch(loginSuccess(res.data));
+      toast(`Logged in as ${res.data.name}`,{theme:theme.palette.mode })
+      setLoading(false)
       res.status === 200 && navigate("/");
     } catch (error) {
       console.log(error);
@@ -75,7 +85,15 @@ export default function Register() {
             </Stack>
           </Container>
           <Box>
-            <Button variant="contained" onClick={handleSubmit}>Signup</Button>
+          <LoadingButton
+              loading={loading}
+              loadingPosition="start"
+              onClick={handleSubmit}
+              variant="contained"
+              startIcon={<PersonIcon />}
+            >
+              Register
+            </LoadingButton>
           </Box>
         </Stack>
       </Box>

@@ -11,7 +11,7 @@ import {Provider } from "react-redux"
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore} from "redux-persist"
 import axios from 'axios'
-axios.defaults.baseURL = "https://electron-api.herokuapp.com/api"
+axios.defaults.baseURL = `https://electronapi.onrender.com/api`
 const root = ReactDOM.createRoot(document.getElementById("root"));
 let persistor = persistStore(store)
 

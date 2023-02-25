@@ -21,6 +21,9 @@ import {
 } from "firebase/storage";
 import { app } from "../Firebase";
 import { deleteComment } from "../redux/commentSlice";
+import LoadingButton from '@mui/lab/LoadingButton';
+import LogoutIcon from '@mui/icons-material/Login';
+import { useState } from "react";
 
 const style = {
   position: "absolute",
@@ -39,7 +42,7 @@ export default function AlertDialogBox() {
   const alertContext = useContext(AlertContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [loading,setLoading] = useState(false)
   const deleteFile = (file, folder) => {
     const storage = getStorage(app);
     const storageref = ref(storage, folder + file);
@@ -53,8 +56,10 @@ export default function AlertDialogBox() {
   };
 
   const triggerLogout = async () => {
+    setLoading(true)
     await axios.get("auth/logout", { withCredentials: true });
     dispatch(logout());
+    setLoading(false)
     navigate("/");
     alertContext.setOpen(false);
     alertContext.setRes(false);
@@ -89,9 +94,16 @@ export default function AlertDialogBox() {
           <Button variant="contained" onClick={handleClose} >
             Cancel
           </Button>
-          <Button variant="contained" onClick={triggerLogout} color="error">
-            Logout
-          </Button>
+          <LoadingButton
+              loading={loading}
+              loadingPosition="start"
+              onClick={triggerLogout}
+              variant="contained"
+              color="error"
+              startIcon={<LogoutIcon />}
+            >
+              Logout
+            </LoadingButton>
         </>
       );
     }
